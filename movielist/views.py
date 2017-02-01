@@ -1,5 +1,5 @@
 from django.http import HttpResponse
+from django.shortcuts import render
 
-
-def index(request):
-    return HttpResponse("Hello, world. You're at the homepage. Soon, you can keep track of which movies you've already seen and score them")
+def intro(request):
+    return render(request, 'movielist/intro.html', {})
