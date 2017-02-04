@@ -129,10 +129,10 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/Python projects/007. Mhaggle/movielist/static/'
 
 # Extra places for collectstatic to find static files.
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-    '/Python projects/007. Mhaggle/movielist/static/'
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+#     '/Python projects/007. Mhaggle/movielist/static/'
+# ]
 
 # STATICFILES_DIRS = [
 #     os.path.join(PROJECT_ROOT, 'static'),
