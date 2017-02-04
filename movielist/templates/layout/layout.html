@@ -1,17 +1,22 @@
+{% load staticfiles %}
+
 <html>
 
 <head>
 	<meta charset="utf-8" />
 	<title> Mhaggle {% block title %}{% endblock %}</title>
-	
+	<link href="{% static 'css/bootstrap.min.css' %}"  rel="stylesheet"/>
 </head>
 
 <body>
 
-	{% block content %}
+	<div class="container">
 
-	{% endblock %}
+		{% block content %}	
 
+		{% endblock %}
+
+	</div>
 </body>
 
 </html>
