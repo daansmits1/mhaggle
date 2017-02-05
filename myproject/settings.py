@@ -82,9 +82,11 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'movielist',
-        'USER': 'postgres',
-        'PASSWORD': 'mhaggle100!'
+        'NAME': 'd9mgi09jubttvq',
+        'USER': 'gugaqtskzwhpuq',
+        'PASSWORD': '242c81e177bf747fe1159cb0da4edcfc6fd205e5341a6a911629f17089749bb0'
+        'HOST':'ec2-75-101-142-182.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
