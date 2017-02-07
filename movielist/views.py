@@ -1,8 +1,12 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from movielist.models import Movie
 
-def intro(request):
 
+def intro(request):
 	full_list = Movie.objects.all()
 	return render(request, 'movielist/intro.html', {"full_list": full_list})
+
+def detail(request, movie_id):
+	movie = get_object_or_404(Movie, pk=movie_id)
+	return render(request, 'movielist/detail.html', {'movie': movie})
