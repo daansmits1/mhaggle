@@ -10,3 +10,9 @@ def intro(request):
 def detail(request, movie_id):
 	movie = get_object_or_404(Movie, pk=movie_id)
 	return render(request, 'movielist/detail.html', {'movie': movie})
+
+def search(request):
+	return render(request, 'movielist/search.html')
+
+def results(request):
+	return	HttpResponse("This is the results page")
