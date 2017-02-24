@@ -4,12 +4,23 @@
 
 {% block content %}
 
-                <form action=" " class="form-inline">
-                    <div class="form-group">
-                    <input type="text" name="search_terms"
-                    placeholder="Enter your search terms" class="form-control">
-                    </div>
-                    <input type="submit" class="btn btn-primary">
-                </form>
+<!-- <form method='GET' action="" class="form-inline">
+    <div class="form-group">
+    <input type="text" name="search_terms"
+    placeholder="Enter your search terms" class="form-control">
+    </div>
+    <input type="submit" class="btn btn-primary">
+</form>  -->
+
+<form method='GET' action="">
+    <input type="text" name="search_terms" placeholder="Enter your search terms"/>
+    <input type="submit" value="Search"/ class="btn btn-primary">
+</form>
+
+<ul>
+{% for movie in search_list %}
+	<li><a href="/movielist/{{ movie.id }}/"> {{ movie.title_year }}, </a> overall score: {{ movie.rating_overall }} </li>
+{% endfor %}
+</ul> 
 
 {% endblock %}

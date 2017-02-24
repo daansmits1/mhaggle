@@ -12,6 +12,10 @@ def detail(request, movie_id):
 	return render(request, 'movielist/detail.html', {'movie': movie})
 
 def search(request):
+	search = request.GET.get("search_terms")
+	if search:
+		search_list = Movie.objects.filter(title__icontains=search)
+		return render(request, 'movielist/search.html', {"search_list": search_list})
 	return render(request, 'movielist/search.html')
 
 def results(request):
