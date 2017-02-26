@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 import dj_database_url
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -83,7 +85,7 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd9mgi09jubttvq',
+        'NAME': os.environ['DATABASE_NAME'],
         'USER': 'gugaqtskzwhpuq',
         'PASSWORD': '242c81e177bf747fe1159cb0da4edcfc6fd205e5341a6a911629f17089749bb0',
         'HOST': 'ec2-75-101-142-182.compute-1.amazonaws.com',
