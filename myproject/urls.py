@@ -15,8 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from movielist import views
 
 urlpatterns = [
+	url(r'^$', views.home),
 	url(r'^movielist/', include('movielist.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^accounts/', include('django.contrib.auth.urls'))
 ]

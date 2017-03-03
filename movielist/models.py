@@ -20,12 +20,16 @@ class Movie(models.Model):
 	def __str__(self):
 		return self.title_year
 
+# class Rating(models.Model):
+# 	movie = models.ForeignKey(Movie)
+# 	pub_date = models.DateTimeField('date published')
+# 	user_name = models.CharField(max_length=100)
+# 	# comment = models.CharField(max_length=200)
+# 	rating = models.DecimalField(max_digits=3, decimal_places=1)
+# 	watchlist = models.BooleanField()
 
-# class Movielist_personal:
-# ForeignKey!!
-# 	user_id = models.CharField(max_length=30)
-# 	seen = models.BooleanField()
-# 	rating_personal_voted = models.Decimalfield(max_digits=5, decimal_places=3)
-# 	rating_personal_calc = models.Decimalfield(max_digits=5, decimal_places=3)
-# 	date_voted = model.DateTimeField()
+
+
+
+
 

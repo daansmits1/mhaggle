@@ -1,7 +1,12 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from movielist.models import Movie
+from django.contrib.auth.decorators import login_required
 
+
+def home(request):
+	full_list = Movie.objects.all()
+	return render(request, 'movielist/intro.html', {"full_list": full_list})
 
 def intro(request):
 	full_list = Movie.objects.all()
@@ -18,5 +23,6 @@ def search(request):
 		return render(request, 'movielist/search.html', {"search_list": search_list})
 	return render(request, 'movielist/search.html')
 
-def results(request):
-	return	HttpResponse("This is the results page")
+@login_required
+def movielist_personal(request):
+	return render(request, 'movielist/movielist_personal.html')
