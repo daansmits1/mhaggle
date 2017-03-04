@@ -15,4 +15,12 @@
 <h3> Length (min.): {{ movie.length_min }} </h3>
 <h3> Overall rating: {{ movie.rating_overall }} </h3>
 
+<h3><strong> Rate this movie: </strong></h3>
+
+<form action="{% url 'movielist:detail' movie.id %}" method="post">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<input type="submit" value="Add" />
+</form>
+
 {% endblock %}

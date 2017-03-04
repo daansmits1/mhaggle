@@ -19,7 +19,7 @@ from movielist import views
 
 urlpatterns = [
 	url(r'^$', views.home),
-	url(r'^movielist/', include('movielist.urls')),
+	url(r'^movielist/', include('movielist.urls', namespace="movielist")),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('django.contrib.auth.urls'))
 ]

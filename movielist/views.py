@@ -1,7 +1,10 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-from movielist.models import Movie
+from movielist.models import Movie, Wishlist
+from movielist.forms import WishlistForm
+from django.core.urlresolvers import reverse	
 from django.contrib.auth.decorators import login_required
+import datetime
 
 
 def home(request):
@@ -12,9 +15,42 @@ def intro(request):
 	full_list = Movie.objects.all()
 	return render(request, 'movielist/intro.html', {"full_list": full_list})
 
+# Doesn't seem to work: says Rating is not able to convert to Decimal 
+
+# def detail(request, movie_id):
+# 	movie = get_object_or_404(Movie, pk=movie_id)
+# 	rating_list = Rating.objects.all()
+# 	form = RatingForm(request.POST)
+# 	if form.is_valid():
+# 		rating = form.cleaned_data['rating']
+# 		watchlist = form.cleaned_data['watchlist']
+# 		user_name = form.cleaned_data['user_name']
+# 		rating = Rating()
+# 		rating.movie = movie
+# 		rating.rating = rating
+# 		rating.watchlist = watchlist
+# 		rating.user_name = user_name
+# 		rating.pub_date = datetime.datetime.now()
+# 		rating.save()
+# 		return HttpResponseRedirect(reverse('movielist:detail'), args=(movie.id,))
+# 	return render(request, 'movielist/detail.html', {'movie': movie,'rating_list': rating_list, 'form': form
+
 def detail(request, movie_id):
 	movie = get_object_or_404(Movie, pk=movie_id)
-	return render(request, 'movielist/detail.html', {'movie': movie})
+	form = WishlistForm(request.POST)
+	full_list = Movie.objects.all()
+	if form.is_valid():
+		wishes = form.cleaned_data['wishlist']
+		user_name = form.cleaned_data['user_name']
+		wishlist = Wishlist()
+		wishlist.movie = movie
+		wishlist.wishlist = wishes
+		wishlist.user_name = user_name
+		wishlist.pub_date = datetime.datetime.now()
+		wishlist.save()
+		# return HttpResponseRedirect(reverse('movielist:detail'), args=(movie,)) Don't get this to work
+		return render(request, 'movielist/intro.html', {"full_list": full_list})		
+	return render(request, 'movielist/detail.html', {'movie': movie, 'form': form})
 
 def search(request):
 	search = request.GET.get("search_terms")
@@ -23,6 +59,7 @@ def search(request):
 		return render(request, 'movielist/search.html', {"search_list": search_list})
 	return render(request, 'movielist/search.html')
 
-@login_required
-def movielist_personal(request):
-	return render(request, 'movielist/movielist_personal.html')
+# @login_required
+def wishlist(request):
+	full_list = Wishlist.objects.filter(wishlist=1)
+	return render(request, 'movielist/wishlist.html', {"full_list": full_list})
