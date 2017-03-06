@@ -21,4 +21,5 @@ urlpatterns = [
 	url(r'^$', views.home),
 	url(r'^movielist/', include('movielist.urls', namespace="movielist")),
     url(r'^admin/', admin.site.urls),
+    url(r'^accounts/', include('registration.backends.hmac.urls')),
 ]

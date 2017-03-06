@@ -60,6 +60,8 @@ def search(request):
 	return render(request, 'movielist/search.html')
 
 # @login_required
-def wishlist(request):
+def wishlist(request, username=None):
+	if not username:
+		username = request.user.username
 	full_list = Wishlist.objects.filter(wishlist=1)
-	return render(request, 'movielist/wishlist.html', {"full_list": full_list})
+	return render(request, 'movielist/wishlist.html', {"full_list": full_list, "username": username})

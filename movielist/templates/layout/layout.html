@@ -12,10 +12,15 @@
 
 
 <ul class="nav nav-tabs">
-  <li role="presentation"><a href="/movielist/">Home</a></li> <!-- How to add dynamic active tab? -->
-  <li role="presentation"><a href="/movielist/search">Search</a></li>
-  <li role="presentation"><a href="/movielist/wishlist">Wishlist</a></li>
-  <li role="presentation"><a href="/admin">Admin</a></li>
+	<li role="presentation"><a href="/movielist/">Home</a></li> <!-- How to add dynamic active tab? -->
+  	<li role="presentation"><a href="/movielist/search">Search</a></li>
+  	<li role="presentation"><a href="/movielist/wishlist">Wishlist</a></li>
+  	<li role="presentation"><a href="/admin">Admin</a></li>
+	{% if user.is_authenticated %}
+    <li><a href="/accounts/logout">Logout</a></li> <h3> Daan </h3>
+    {% else %}
+    <li><a href="/accounts/login">Login</a></li> 
+	{% endif %}
 </ul>
 
 

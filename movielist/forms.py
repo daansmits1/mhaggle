@@ -11,7 +11,7 @@ from movielist.models import Wishlist
 class WishlistForm(ModelForm):
 	class Meta:
 		model = Wishlist
-		fields = ['user_name','wishlist']
+		fields = ['wishlist', 'user_name']
 		widgets = {}
 
 
