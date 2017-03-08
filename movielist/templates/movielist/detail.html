@@ -17,7 +17,7 @@
 
 
 {% if user.is_authenticated %} 
-<h3><strong> Rate this movie: </strong></h3>
+<h3><strong> Add this movie to your watchlist: </strong></h3>
 <form action="{% url 'movielist:detail' movie.id %}" method="post">
 	{% csrf_token %}
 	{{ form.as_p }}
