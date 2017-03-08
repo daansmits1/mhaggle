@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<h1>Hello, world. You're at the detail page of {{ movie.title_year }} </h1>
+<h1>You're at the detail page of {{ movie.title_year }} </h1>
 
 <h3> Movie name: {{ movie.title }} </h3>
 <h3> Released in: {{ movie.year }} </h3>
@@ -16,13 +16,14 @@
 <h3> Overall rating: {{ movie.rating_overall }} </h3>
 
 
-<!-- {% if user.is_authenticated %} -->
+{% if user.is_authenticated %} 
 <h3><strong> Rate this movie: </strong></h3>
 <form action="{% url 'movielist:detail' movie.id %}" method="post">
 	{% csrf_token %}
 	{{ form.as_p }}
 	<input type="submit" value="Add" />
 </form>
-<!-- {% endif %} -->
+{% endif %}
+
 
 {% endblock %}
