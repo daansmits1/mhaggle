@@ -23,7 +23,7 @@ class Movie(models.Model):
 # class Rating(models.Model):
 # 	movie = models.ForeignKey(Movie)
 # 	pub_date = models.DateTimeField('date published')
-# 	user_name = models.CharField(max_length=100)
+# 	user_name = models.CharField(max_length=100) just save user (as foreign key)
 # 	rating = models.DecimalField(max_digits=3, decimal_places=1, null=True)
 
 

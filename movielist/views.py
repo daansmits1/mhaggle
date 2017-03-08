@@ -61,23 +61,16 @@ def search(request):
 	return render(request, 'movielist/search.html')
 
 # @login_required
-def wishlist(request, username=None):
-	username = request.POST["username"]
-	password = request.POST['password']
-	user = authenticate(username=username, password=password)
-	if user is not None:
-		login(request, user)
-		# if user.is_active:
-		# 	login(request, user)
-		full_list = Wishlist.objects.filter(wishlist=1, user_name=user)
-		return render(request, 'movielist/wishlist.html', {"full_list": full_list, "username": username})
+def wishlist(request):
+	if request.user.is_authenticated():
+		full_list = Wishlist.objects.filter(wishlist=1, user_name=request.user)
 	else: 
-		error = "Something went wrong, please try again"
-		# here I should add the login form in some way, but I can't find that
-		return render(request, 'registration/login.html', {"error": error})
+		full_list = Wishlist.objects.filter(wishlist=1)
+	return render(request, 'movielist/wishlist.html', {"full_list": full_list})
 
 # @login_required
-def profile_page(request, username=None):
+# do you want to make profile page public? otherwise maybe dashboard
+def profile_page(request):
 	username = request.POST["username"]
 	password = request.POST['password']
 	user = authenticate(username=username, password=password)
@@ -86,8 +79,7 @@ def profile_page(request, username=None):
 		# if user.is_active:
 		# 	login(request, user)
 		full_list = Wishlist.objects.filter(wishlist=1)
-		return render(request, 'movielist/profile.html', {"full_list": full_list, "username": username})
+		return render(request, 'movielist/profile_page.html', {"full_list": full_list, "username": username})
 	else: 
 		error = "Something went wrong, please try again"
-		# here I should add the login form in some way, but I can't find that
 		return render(request, 'registration/login.html', {"error": error})
