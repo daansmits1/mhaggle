@@ -2,6 +2,8 @@
 {% load i18n %}
 
 {% block content %}
+{{ error }}
+
 <form method="post" action="{% url 'movielist:wishlist' %}">
   {% csrf_token %} 
   {{ form.as_p }}

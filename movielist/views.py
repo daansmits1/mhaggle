@@ -4,6 +4,7 @@ from movielist.models import Movie, Wishlist
 from movielist.forms import WishlistForm
 from django.core.urlresolvers import reverse	
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
 import datetime
 
 
@@ -61,7 +62,16 @@ def search(request):
 
 # @login_required
 def wishlist(request, username=None):
-	if not username:
-		username = request.user.username
-	full_list = Wishlist.objects.filter(wishlist=1)
-	return render(request, 'movielist/wishlist.html', {"full_list": full_list, "username": username})
+	username = request.POST["username"]
+	password = request.POST['password']
+	user = authenticate(username=username, password=password)
+	if user is not None:
+		login(request, user)
+		# if user.is_active:
+		# 	login(request, user)
+		full_list = Wishlist.objects.filter(wishlist=1)
+		return render(request, 'movielist/wishlist.html', {"full_list": full_list, "username": username})
+	else: 
+		error = "Something went wrong, please try again"
+		# here I should add the login form in some way, but I can't find that
+		return render(request, 'registration/login.html', {"error": error})
