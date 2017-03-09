@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-from movielist.models import Movie, Wishlist
-from movielist.forms import WishlistForm
+from movielist.models import Movie, Wishlist, Rating
+from movielist.forms import WishlistForm, RatingForm
 from django.core.urlresolvers import reverse	
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
@@ -16,32 +16,13 @@ def intro(request):
 	full_list = Movie.objects.all()
 	return render(request, 'movielist/intro.html', {"full_list": full_list})
 
-# Doesn't seem to work: says Rating is not able to convert to Decimal 
-
-# def detail(request, movie_id):
-# 	movie = get_object_or_404(Movie, pk=movie_id)
-# 	rating_list = Rating.objects.all()
-# 	form = RatingForm(request.POST)
-# 	if form.is_valid():
-# 		rating = form.cleaned_data['rating']
-# 		watchlist = form.cleaned_data['watchlist']
-# 		user_name = form.cleaned_data['user_name']
-# 		rating = Rating()
-# 		rating.movie = movie
-# 		rating.rating = rating
-# 		rating.watchlist = watchlist
-# 		rating.user_name = user_name
-# 		rating.pub_date = datetime.datetime.now()
-# 		rating.save()
-# 		return HttpResponseRedirect(reverse('movielist:detail'), args=(movie.id,))
-# 	return render(request, 'movielist/detail.html', {'movie': movie,'rating_list': rating_list, 'form': form
-
 def detail(request, movie_id):
 	movie = get_object_or_404(Movie, pk=movie_id)
-	form = WishlistForm(request.POST)
+	form_w = WishlistForm(request.POST)
+	form_r = RatingForm(request.POST)
 	full_list = Movie.objects.all()
-	if form.is_valid():
-		wishes = form.cleaned_data['wishlist']
+	if form_w.is_valid():
+		wishes = form_w.cleaned_data['wishlist']
 		user_name = request.user.username
 		wishlist = Wishlist()
 		wishlist.movie = movie
@@ -49,9 +30,35 @@ def detail(request, movie_id):
 		wishlist.user_name = user_name
 		wishlist.pub_date = datetime.datetime.now()
 		wishlist.save()
+	if form_r.is_valid():
+		rate = form_r.cleaned_data['rating']
+		user_name = request.user.username
+		rating = Rating()
+		rating.movie = movie
+		rating.rating = rate
+		rating.user_name = user_name
+		rating.pub_date = datetime.datetime.now()
+		rating.save()
 		# return HttpResponseRedirect(reverse('movielist:detail'), args=(movie,)) Don't get this to work
 		return render(request, 'movielist/intro.html', {"full_list": full_list})		
-	return render(request, 'movielist/detail.html', {'movie': movie, 'form': form})
+	return render(request, 'movielist/detail.html', {'movie': movie, 'form_w': form_w, 'form_r': form_r})
+
+# def detail(request, movie_id):
+# 	movie = get_object_or_404(Movie, pk=movie_id)
+# 	form = WishlistForm(request.POST)
+# 	full_list = Movie.objects.all()
+# 	if form.is_valid():
+# 		wishes = form.cleaned_data['wishlist']
+# 		user_name = request.user.username
+# 		wishlist = Wishlist()
+# 		wishlist.movie = movie
+# 		wishlist.wishlist = wishes
+# 		wishlist.user_name = user_name
+# 		wishlist.pub_date = datetime.datetime.now()
+# 		wishlist.save()
+# 		# return HttpResponseRedirect(reverse('movielist:detail'), args=(movie,)) Don't get this to work
+# 		return render(request, 'movielist/intro.html', {"full_list": full_list})		
+# 	return render(request, 'movielist/detail.html', {'movie': movie, 'form': form})
 
 def search(request):
 	search = request.GET.get("search_terms")

@@ -1,11 +1,11 @@
 from django.forms import ModelForm
-from movielist.models import Wishlist
+from movielist.models import Wishlist, Rating
 
-# class RatingForm(ModelForm):
-# 	class Meta:
-# 		model = Rating
-# 		fields = ['user_name','rating']
-# 		widgets = {}
+class RatingForm(ModelForm):
+	class Meta:
+		model = Rating
+		fields = ['rating']
+		widgets = {}
 
 
 class WishlistForm(ModelForm):

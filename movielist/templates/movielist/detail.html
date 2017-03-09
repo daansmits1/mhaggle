@@ -20,7 +20,14 @@
 <h3><strong> Add this movie to your watchlist: </strong></h3>
 <form action="{% url 'movielist:detail' movie.id %}" method="post">
 	{% csrf_token %}
-	{{ form.as_p }}
+	{{ form_w.as_p }}
+	<input type="submit" value="Add" />
+</form>
+
+<h3><strong> Rate this movie </strong></h3>
+<form action="{% url 'movielist:detail' movie.id %}" method="post">
+	{% csrf_token %}
+	{{ form_r.as_p }}
 	<input type="submit" value="Add" />
 </form>
 {% endif %}
