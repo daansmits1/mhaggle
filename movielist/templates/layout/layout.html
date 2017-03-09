@@ -15,9 +15,11 @@
 	<li role="presentation"><a href="/movielist/">Home</a></li> <!-- How to add dynamic active tab? -->
   	<li role="presentation"><a href="/movielist/search">Search</a></li>
   	<li role="presentation"><a href="/movielist/wishlist">Wishlist</a></li>
+	<li role="presentation"><a href="/movielist/rating_list">Ratings</a></li>
   	<li role="presentation"><a href="/admin">Admin</a></li>
 	{% if user.is_authenticated %}
-    <li><a href="/movielist/wishlist">{{ user.username }}</a></li>
+    <li><a href="/movielist/rating_list">{{ user.username }}</a></li>
+    <!-- <li><a href="/movielist/profile_page">{{ user.username }}</a></li> -->
     <li><a href="/accounts/logout">Logout</a></li>
     {% else %}
     <li><a href="/accounts/login">Login</a></li> 	

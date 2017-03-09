@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^search/$', views.search, name='search'),
     url(r'^wishlist/$', views.wishlist, name='wishlist'),
     url(r'^profile_page/$', views.profile_page, name='profile_page'),
+	url(r'^rating_list/$', views.rating_list, name='rating_list'),
 ]

@@ -11,7 +11,7 @@
 
 <ul>
 {% for movie in full_list %}
-	<li><a href="/movielist/{{ movie.id }}/"> {{ movie.title_year }}, </a> overall score: {{ movie.rating_overall }} </li>
+	<li><a href="/movielist/{{ movie.id }}/"> {{ movie.title_year }}</a>, overall score: {{ movie.rating_overall }} </li>
 {% endfor %}
 </ul> 
 

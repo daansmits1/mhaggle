@@ -43,23 +43,6 @@ def detail(request, movie_id):
 		return render(request, 'movielist/intro.html', {"full_list": full_list})		
 	return render(request, 'movielist/detail.html', {'movie': movie, 'form_w': form_w, 'form_r': form_r})
 
-# def detail(request, movie_id):
-# 	movie = get_object_or_404(Movie, pk=movie_id)
-# 	form = WishlistForm(request.POST)
-# 	full_list = Movie.objects.all()
-# 	if form.is_valid():
-# 		wishes = form.cleaned_data['wishlist']
-# 		user_name = request.user.username
-# 		wishlist = Wishlist()
-# 		wishlist.movie = movie
-# 		wishlist.wishlist = wishes
-# 		wishlist.user_name = user_name
-# 		wishlist.pub_date = datetime.datetime.now()
-# 		wishlist.save()
-# 		# return HttpResponseRedirect(reverse('movielist:detail'), args=(movie,)) Don't get this to work
-# 		return render(request, 'movielist/intro.html', {"full_list": full_list})		
-# 	return render(request, 'movielist/detail.html', {'movie': movie, 'form': form})
-
 def search(request):
 	search = request.GET.get("search_terms")
 	if search:
@@ -69,11 +52,19 @@ def search(request):
 
 @login_required
 def wishlist(request):
-	if request.user.is_authenticated():
+	if request.user.is_authenticated(): # This is not necessary if you also have login_required. Change after deciding setup of page
 		full_list = Wishlist.objects.filter(wishlist=1, user_name=request.user)
 	else: 
 		full_list = Wishlist.objects.filter(wishlist=1)
 	return render(request, 'movielist/wishlist.html', {"full_list": full_list})
+
+# @login_required
+def rating_list(request):
+	if request.user.is_authenticated(): # This is not necessary if you also have login_required. Change after deciding setup of page
+		full_list = Rating.objects.filter(user_name=request.user)
+	else: 
+		full_list = Rating.objects.all()
+	return render(request, 'movielist/rating_list.html', {"full_list": full_list})
 
 
 # @login_required

@@ -1,0 +1,15 @@
+{% extends 'layout/layout.html' %}
+
+{% block title %}Wishlist{% endblock %}
+
+{% block content %}
+
+<h1>Hi! This is your personal wishlist </h1>
+
+<ul>
+{% for rating_object in full_list %}
+	<li><a href="/movielist/{{ rating_object.movie.id }}/"> {{ rating_object.movie.title }} </a>, rated {{ rating_object.rating }} by {{ rating_object.user_name }}</li>
+{% endfor %}
+</ul> 
+
+{% endblock %}
