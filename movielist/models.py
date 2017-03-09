@@ -29,7 +29,8 @@ class Movie(models.Model):
 
 class Wishlist(models.Model):
 	WISHLIST_CHOICES = ((1, 1), (0, 0))
-	movie = models.ForeignKey(Movie)
+	movie = models.ForeignKey(Movie) 
+	#add user as other ForeignKey? --> allows for easier lookup of wishlist for user (user.wishlist.all()). Same for Ratings
 	pub_date = models.DateTimeField('date published')
 	user_name = models.CharField(max_length=100)
 	wishlist = models.IntegerField(choices=WISHLIST_CHOICES)

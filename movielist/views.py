@@ -60,13 +60,14 @@ def search(request):
 		return render(request, 'movielist/search.html', {"search_list": search_list})
 	return render(request, 'movielist/search.html')
 
-# @login_required
+@login_required
 def wishlist(request):
 	if request.user.is_authenticated():
 		full_list = Wishlist.objects.filter(wishlist=1, user_name=request.user)
 	else: 
 		full_list = Wishlist.objects.filter(wishlist=1)
 	return render(request, 'movielist/wishlist.html', {"full_list": full_list})
+
 
 # @login_required
 # do you want to make profile page public? otherwise maybe dashboard

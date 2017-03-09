@@ -13,5 +13,5 @@ class WishlistForm(ModelForm):
 		model = Wishlist
 		fields = ['wishlist', 'user_name']
 		widgets = {}
-
+	# rating = maybe set up as form not as ModelForm (watch the import!) 
 
