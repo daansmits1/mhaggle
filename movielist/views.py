@@ -42,7 +42,7 @@ def detail(request, movie_id):
 	full_list = Movie.objects.all()
 	if form.is_valid():
 		wishes = form.cleaned_data['wishlist']
-		user_name = form.cleaned_data['user_name']
+		user_name = request.user.username
 		wishlist = Wishlist()
 		wishlist.movie = movie
 		wishlist.wishlist = wishes
