@@ -5,6 +5,7 @@ from movielist.forms import WishlistForm, RatingForm
 from django.core.urlresolvers import reverse	
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
+from django.contrib import messages
 import datetime
 
 
@@ -18,8 +19,8 @@ def intro(request):
 
 def detail(request, movie_id):
 	movie = get_object_or_404(Movie, pk=movie_id)
-	form_w = WishlistForm(request.POST)
-	form_r = RatingForm(request.POST)
+	form_w = WishlistForm(request.POST or None)
+	form_r = RatingForm(request.POST or None)
 	full_list = Movie.objects.all()
 	if form_w.is_valid():
 		wishes = form_w.cleaned_data['wishlist']
@@ -39,8 +40,8 @@ def detail(request, movie_id):
 		rating.user_name = user_name
 		rating.pub_date = datetime.datetime.now()
 		rating.save()
+	messages.success(request, "Successfully saved")
 		# return HttpResponseRedirect(reverse('movielist:detail'), args=(movie,)) Don't get this to work
-		return render(request, 'movielist/intro.html', {"full_list": full_list})		
 	return render(request, 'movielist/detail.html', {'movie': movie, 'form_w': form_w, 'form_r': form_r})
 
 def search(request):
@@ -53,9 +54,9 @@ def search(request):
 @login_required
 def wishlist(request):
 	if request.user.is_authenticated(): # This is not necessary if you also have login_required. Change after deciding setup of page
-		full_list = Wishlist.objects.filter(wishlist=1, user_name=request.user)
+		full_list = Wishlist.objects.filter(wishlist=True, user_name=request.user)
 	else: 
-		full_list = Wishlist.objects.filter(wishlist=1)
+		full_list = Wishlist.objects.filter(wishlist=True)
 	return render(request, 'movielist/wishlist.html', {"full_list": full_list})
 
 # @login_required
@@ -75,9 +76,10 @@ def profile_page(request):
 	user = authenticate(username=username, password=password)
 	if user is not None:
 		login(request, user)
+		# Probably need to do: if user-authenticated, don't login again
 		# if user.is_active:
 		# 	login(request, user)
-		full_list = Wishlist.objects.filter(wishlist=1)
+		full_list = Wishlist.objects.filter(wishlist=True)
 		return render(request, 'movielist/profile_page.html', {"full_list": full_list, "username": username})
 	else: 
 		error = "Something went wrong, please try again"
