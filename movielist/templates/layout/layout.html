@@ -37,15 +37,16 @@
         </div>
         <button type="submit" value="Search"/ class="btn btn-default">Go</button>
       </form> -->
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav navbar-right"> 
         {% if user.is_authenticated %} 	
         <!-- try to change this to a dropdown menu (requires javascript, but I don't know how to do that) -->
             <li><a href="/movielist/wishlist">My Wishlist</a></li>
             <li><a href="/movielist/rating_list">My Ratings</a></li>
             <li><a href="/movielist/profile_page">My profile</a></li>
+            <li><a href="/accounts/logout">Logout</a></li>
         {% else %}
-        <li><a href="/accounts/login">Login</a></li>
-        <li><a href="#">Register</a></li>
+            <li><a href="/accounts/login">Login</a></li>
+            <li><a href="{% url 'registration_register' %}">Register</a></li>
       	{% endif %}
       </ul>
     </div><!-- /.navbar-collapse -->

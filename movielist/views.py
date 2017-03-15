@@ -21,7 +21,7 @@ def detail(request, movie_id):
 	movie = get_object_or_404(Movie, pk=movie_id)
 	form_w = WishlistForm(request.POST or None)
 	form_r = RatingForm(request.POST or None)
-	full_list = Movie.objects.all()
+	# full_list = Movie.objects.all()
 	if form_w.is_valid():
 		wishes = form_w.cleaned_data['wishlist']
 		user_name = request.user.username
