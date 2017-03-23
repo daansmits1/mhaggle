@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from movielist.models import Wishlist, Rating
+from movielist.models import Wishlist, Rating, Actor, Seenlist
 
 class RatingForm(ModelForm):
 	class Meta:
@@ -7,11 +7,21 @@ class RatingForm(ModelForm):
 		fields = ['rating']
 		widgets = {}
 
-
 class WishlistForm(ModelForm):
 	class Meta:
 		model = Wishlist
 		fields = ['wishlist']
 		widgets = {}
-	# rating = maybe set up as form not as ModelForm (watch the import!) 
+
+class SeenlistForm(ModelForm):
+	class Meta:
+		model = Seenlist
+		fields = ['seenlist']
+		widgets = {}
+
+class ActorForm(ModelForm):
+	class Meta:
+		model = Actor
+		fields = ['name']
+		widgets = {}
 

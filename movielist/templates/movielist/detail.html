@@ -15,9 +15,13 @@
 <h3> Length (min.): {{ movie.length_min }} </h3>
 <h3> Overall rating: {{ movie.rating_overall }} </h3>
 
+{% for actor in actor_list %}
+{{ actor.name }}
+{% endfor %}
+
 
 {% if user.is_authenticated %} 
-<h3><strong> Add this movie to your watchlist: </strong></h3>
+<!-- <h3><strong> Add this movie to your watchlist: </strong></h3>
 <form action="{% url 'movielist:detail' movie.id %}" method="post">
 	{% csrf_token %}
 	{{ form_w.as_p }}
@@ -30,6 +34,21 @@
 	{{ form_r.as_p }}
 	<input type="submit" value="Add" />
 </form>
+
+<h3><strong> Log an actor </strong></h3>
+<form action="{% url 'movielist:detail' movie.id %}" method="post">
+	{% csrf_token %}
+	{{ form_a.as_p }}
+	<input type="submit" value="Add" />
+</form> -->
+
+<h3><strong> Have you seen this movie? </strong></h3>
+<form action="{% url 'movielist:detail' movie.id %}" method="post">
+	{% csrf_token %}
+	{{ form_s.as_p }}
+	
+	<input type="submit" value="Add" />
+</form> -->
 
 {% if messages %}
 <ul class="messages">

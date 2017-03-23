@@ -1,0 +1,13 @@
+{% extends 'layout/layout.html' %}
+
+{% block title %}Wishlist{% endblock %}
+
+{% block content %}
+
+<h1>Hi! This is your personal seenlist </h1>
+
+{% for movie in movies %}
+	{{ movie.title }} {{ seenlist.user.username }}
+{% endfor %}
+
+{% endblock %}

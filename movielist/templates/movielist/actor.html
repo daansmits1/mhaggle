@@ -1,0 +1,21 @@
+{% extends 'layout/layout.html' %}
+
+{% block title %}Movielist{% endblock %}
+
+{% block content %}
+
+
+
+
+<h1>You're at the introduction page to the movielist. Soon, you can keep track of which movies you've already seen and score them</h1>
+
+<ul>
+{% for actor in actor_list %}
+	<li>{{ actor.name }} </li>
+		{% for movie in movie_set.actor_list %}
+		<li>{{ movie.title }} </li>
+		{% endfor %}
+{% endfor %}
+</ul> 
+
+{% endblock %}
