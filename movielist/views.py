@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-from movielist.models import Movie, Rating, Toseelist
-from movielist.forms import RatingForm, ToseelistForm
+from movielist.models import Movie, Score, Toseelist
+from movielist.forms import ScoreForm, ToseelistForm
 from django.core.urlresolvers import reverse	
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
@@ -19,20 +19,19 @@ def intro(request):
 
 def detail(request, movie_id):
 	movie = get_object_or_404(Movie, pk=movie_id)
-	form_r = RatingForm(request.POST or None)
-	# if form_r.is_valid():
-	# 	rate = form_r.cleaned_data['rating']
-	# 	user_name = request.user.username
-	# 	rating = Rating()
-	## rating = user.rating_set.get_or_create(movie=movie)?
-	# 	rating.movie = movie
-	# 	rating.rating = rate # make sure you don't overwrite if it has already been set
-	# 	rating.user_name = user_name
-	# 	rating.pub_date = datetime.datetime.now()
-	# 	rating.save()
+	form_s = ScoreForm(request.POST or None)
+	if form_s.is_valid():
+		score = form_s.cleaned_data['score']
+		user = request.user
+		score = Score()
+	# rating = user.rating_set.get_or_create(movie=movie)?
+		score.movie = movie
+		score.score = score # make sure you don't overwrite if it has already been set
+		score.user = user
+		score.pub_date = datetime.datetime.now()
+		score.save()
 	form_t = ToseelistForm(request.POST or None)
 	if form_t.is_valid():
-		tosee = form_t.cleaned_data['toseelist']
 		user = request.user
 		if user.toseelist:
 			toseelist = user.toseelist
@@ -41,12 +40,11 @@ def detail(request, movie_id):
 		# toseelist = user.toseelist.get_or_create(user=user)
 		# try if get or create works (instead of create, delete all else)
 		toseelist.pub_date = datetime.datetime.now()
-		toseelist.seenlist = tosee
 		toseelist.save()
 		toseelist.movies.add(movie)
 	messages.success(request, "Successfully saved")
 		# return HttpResponseRedirect(reverse('movielist:detail'), args=(movie,)) Don't get this to work
-	return render(request, 'movielist/detail.html', {'movie': movie, 'form_t': form_t} )
+	return render(request, 'movielist/detail.html', {'movie': movie, 'form_s': form_s, 'form_t': form_t} )
 
 def search(request):
 	search = request.GET.get("search_terms")
@@ -81,8 +79,7 @@ def profile_page(request):
 		# Probably need to do: if user-authenticated, don't login again
 		# if user.is_active:
 		# 	login(request, user)
-		full_list = Wishlist.objects.filter(wishlist=True)
-		return render(request, 'movielist/profile_page.html', {"full_list": full_list, "username": username})
+		return render(request, 'movielist/profile_page.html')
 	else: 
 		error = "Something went wrong, please try again"
 		return render(request, 'registration/login.html', {"error": error})

@@ -1,16 +1,15 @@
 from django.forms import ModelForm, Form
-from movielist.models import Rating, Toseelist
+from movielist.models import Score, Toseelist
 
-class RatingForm(ModelForm):
+class ScoreForm(ModelForm):
 	class Meta:
-		model = Rating
-		fields = ['rating']
+		model = Score
+		fields = ['score']
 		widgets = {}
 
-class ToseelistForm(ModelForm):
+class ToseelistForm(Form):
 	class Meta:
 		model = Toseelist
-		fields = ['toseelist']
 		widgets = {}
 
 # class ActorForm(ModelForm):

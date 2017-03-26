@@ -22,14 +22,26 @@ class Movie(models.Model):
 	def __str__(self):
 		return self.title_year
 
+# can we change this to a manytomany relationship? The difference with the Toseelist is that you have to add the rating to each relationship
 class Rating(models.Model):
-	movies = models.ManyToManyField(Movie) 
+	movies = models.ForeignKey(Movie) 
 	pub_date = models.DateTimeField('date published')
-	user_name = models.CharField(max_length=100) 
+	user = models.ForeignKey(User) 
 	rating = models.DecimalField(max_digits=3, decimal_places=1, null=True) #rating-->value
 
 	def __str__(self):
-		return self.user_name #user.name
+		return self.user.username
+
+# can we change this to a manytomany relationship? The difference with the Toseelist is that you have to add the rating to each relationship
+class Score(models.Model):
+	movies = models.ForeignKey(Movie) 
+	pub_date = models.DateTimeField('date published')
+	user = models.ForeignKey(User) 
+	score = models.DecimalField(max_digits=3, decimal_places=2, null=True) #rating-->value
+
+	def __str__(self):
+		return self.user.username
+
 
 # class Actor(models.Model):
 # 	name = models.CharField(max_length=30)
@@ -44,9 +56,7 @@ class Toseelist(models.Model):
 	movies = models.ManyToManyField(Movie) 
 	pub_date = models.DateTimeField('date published')
 	user = models.OneToOneField(User)
-	#add user as other ForeignKey? --> allows for easier lookup of wishlist for user (user.wishlist.all()). Same for Ratings. After ManyToMany for Movie!
 	# on_delete 
-	toseelist = models.BooleanField()
 
 	def __str__(self):
 		return self.user.username
