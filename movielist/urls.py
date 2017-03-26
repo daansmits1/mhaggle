@@ -9,6 +9,4 @@ urlpatterns = [
     url(r'^wishlist/$', views.wishlist, name='wishlist'),
     url(r'^profile_page/$', views.profile_page, name='profile_page'),
 	url(r'^rating_list/$', views.rating_list, name='rating_list'),
-	url(r'^actor/$', views.actor, name='actor'),
-	url(r'^seenlist/$', views.seenlist, name='seenlist'),
 ]

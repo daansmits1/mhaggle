@@ -7,8 +7,8 @@
 <h1>Hi! This is your personal wishlist </h1>
 
 <ul>
-{% for wishlist_object in full_list %}
-	<li><a href="/movielist/{{ wishlist_object.movie.id }}/"> {{ wishlist_object.movie.title }} </a>, on wishlist of {{ wishlist_object.user_name }}</li>
+{% for movie in movies %}
+	<li><a href="/movielist/{{ movie.id }}/"> {{ movie.title }} </a></li>
 {% endfor %}
 </ul> 
 

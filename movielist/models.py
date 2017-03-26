@@ -23,7 +23,7 @@ class Movie(models.Model):
 		return self.title_year
 
 class Rating(models.Model):
-	movie = models.ForeignKey(Movie)
+	movies = models.ManyToManyField(Movie) 
 	pub_date = models.DateTimeField('date published')
 	user_name = models.CharField(max_length=100) 
 	rating = models.DecimalField(max_digits=3, decimal_places=1, null=True) #rating-->value
@@ -31,33 +31,22 @@ class Rating(models.Model):
 	def __str__(self):
 		return self.user_name #user.name
 
-class Wishlist(models.Model):
-	movie = models.ForeignKey(Movie) 
-	pub_date = models.DateTimeField('date published')
-	user_name = models.CharField(max_length=100)
-	#add user as other ForeignKey? --> allows for easier lookup of wishlist for user (user.wishlist.all()). Same for Ratings. After ManyToMany for Movie!
-	# on_delete 
-	wishlist = models.BooleanField()
+# class Actor(models.Model):
+# 	name = models.CharField(max_length=30)
+# 	movies = models.ManyToManyField(Movie) 
+# 	user_name = models.CharField(max_length=100)
+# 	pub_date = models.DateTimeField('date published')
 
-	def __str__(self):
-		return self.user_name
+# 	def __str__(self):
+# 		return self.name
 
-class Actor(models.Model):
-	name = models.CharField(max_length=30)
-	movies = models.ManyToManyField(Movie) 
-	user_name = models.CharField(max_length=100)
-	pub_date = models.DateTimeField('date published')
-
-	def __str__(self):
-		return self.name
-
-class Seenlist(models.Model):
+class Toseelist(models.Model):
 	movies = models.ManyToManyField(Movie) 
 	pub_date = models.DateTimeField('date published')
 	user = models.OneToOneField(User)
 	#add user as other ForeignKey? --> allows for easier lookup of wishlist for user (user.wishlist.all()). Same for Ratings. After ManyToMany for Movie!
 	# on_delete 
-	seenlist = models.BooleanField()
+	toseelist = models.BooleanField()
 
 	def __str__(self):
 		return self.user.username

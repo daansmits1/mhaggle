@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-from movielist.models import Movie, Wishlist, Rating, Actor, Seenlist
-from movielist.forms import WishlistForm, RatingForm, ActorForm, SeenlistForm
+from movielist.models import Movie, Rating, Toseelist
+from movielist.forms import RatingForm, ToseelistForm
 from django.core.urlresolvers import reverse	
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
@@ -19,20 +19,7 @@ def intro(request):
 
 def detail(request, movie_id):
 	movie = get_object_or_404(Movie, pk=movie_id)
-	# form_w = WishlistForm(request.POST or None)
-	# form_r = RatingForm(request.POST or None)
-	# form_a = ActorForm(request.POST or None)
-	# actor_list = movie.actor_set.all()
-	# if form_w.is_valid():
-	# 	wishes = form_w.cleaned_data['wishlist']
-	# 	user_name = request.user.username
-	# 	wishlist = Wishlist()
-	# 	wishlist.movie = movie
-	# 	wishlist.wishlist = wishes
-	# 	wishlist.user_name = user_name
-	# 	wishlist.pub_date = datetime.datetime.now()
-	# 	wishlist.save()
-	# 	# many to may without creating new object
+	form_r = RatingForm(request.POST or None)
 	# if form_r.is_valid():
 	# 	rate = form_r.cleaned_data['rating']
 	# 	user_name = request.user.username
@@ -43,44 +30,23 @@ def detail(request, movie_id):
 	# 	rating.user_name = user_name
 	# 	rating.pub_date = datetime.datetime.now()
 	# 	rating.save()
-	# if form_a.is_valid():
-	# 	name = form_a.cleaned_data['name']
-	# 	user_name = request.user.username
-	# 	actor = Actor()
-	# 	# getorcreate! so it doesn't duplicate things
-	# 	actor.name = name
-	# 	actor.pub_date = datetime.datetime.now()
-	# 	actor.save()
-	# 	movie.actor_set.add(actor)
-	form_s = SeenlistForm(request.POST or None)
-	if form_s.is_valid():
-		seen = form_s.cleaned_data['seenlist']
+	form_t = ToseelistForm(request.POST or None)
+	if form_t.is_valid():
+		tosee = form_t.cleaned_data['toseelist']
 		user = request.user
-		if user.seenlist:
-			seenlist = user.seenlist
+		if user.toseelist:
+			toseelist = user.toseelist
 		else:
-			seenlist = user.seenlist.create()
+			toseelist = user.toseelist.create()
+		# toseelist = user.toseelist.get_or_create(user=user)
 		# try if get or create works (instead of create, delete all else)
-		seenlist.pub_date = datetime.datetime.now()
-		seenlist.seenlist = seen
-		seenlist.save()
-		# movie.seenlist_set.add(seenlist)
-		seenlist.movies.add(movie)
+		toseelist.pub_date = datetime.datetime.now()
+		toseelist.seenlist = tosee
+		toseelist.save()
+		toseelist.movies.add(movie)
 	messages.success(request, "Successfully saved")
 		# return HttpResponseRedirect(reverse('movielist:detail'), args=(movie,)) Don't get this to work
-	# return render(request, 'movielist/detail.html', {'movie': movie, 'form_w': form_w, 'form_r': form_r, 'form_a': form_a, 'actor_list':actor_list} )
-	return render(request, 'movielist/detail.html', {'movie': movie, 'form_s': form_s} )
-
-# delete again after fixing many to many for rating and wishlist
-def seenlist(request):
-	# seen_list = Movie.objects.filter(seenlist__seen=True)
-	seenlist = request.user.seenlist
-	movies = seenlist.movies.all
-	return render(request, 'movielist/seenlist.html', {'seenlist': seenlist, 'movies': movies} )
-
-def actor(request):
-	actor_list = Actor.objects.all()
-	return render(request, 'movielist/actor.html', {'actor_list':actor_list} )
+	return render(request, 'movielist/detail.html', {'movie': movie, 'form_t': form_t} )
 
 def search(request):
 	search = request.GET.get("search_terms")
@@ -91,11 +57,9 @@ def search(request):
 
 @login_required
 def wishlist(request):
-	if request.user.is_authenticated(): # This is not necessary if you also have login_required. Change after deciding setup of page
-		full_list = Wishlist.objects.filter(wishlist=True, user_name=request.user)
-	else: 
-		full_list = Wishlist.objects.filter(wishlist=True)
-	return render(request, 'movielist/wishlist.html', {"full_list": full_list})
+	toseelist = request.user.toseelist
+	movies = toseelist.movies.all
+	return render(request, 'movielist/wishlist.html', {"movies": movies})
 
 # @login_required
 def rating_list(request):
