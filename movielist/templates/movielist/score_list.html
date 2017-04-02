@@ -1,0 +1,16 @@
+{% extends 'layout/layout.html' %}
+
+{% block title %}Wishlist{% endblock %}
+
+{% block content %}
+
+<h1>Hi! This is your personal ratings overview </h1>
+
+
+<ul>
+{% for score in score_list %}
+	<li><a href="/movielist/{{ score.movies.id }}/"> {{ score.movies.title }}</a>, rated {{ score.score }} </li>
+{% endfor %}
+</ul> 
+
+{% endblock %}

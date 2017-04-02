@@ -20,25 +20,21 @@ def intro(request):
 def detail(request, movie_id):
 	movie = get_object_or_404(Movie, pk=movie_id)
 	form_s = ScoreForm(request.POST or None)
+	form_t = ToseelistForm(request.POST or None)
+	user = request.user
 	if form_s.is_valid():
-		score = form_s.cleaned_data['score']
-		user = request.user
 		score = Score()
 	# rating = user.rating_set.get_or_create(movie=movie)?
-		score.movie = movie
-		score.score = score # make sure you don't overwrite if it has already been set
+		score.movies = movie
+		score.score = form_s.cleaned_data['score'] # make sure you don't overwrite if it has already been set
 		score.user = user
 		score.pub_date = datetime.datetime.now()
 		score.save()
-	form_t = ToseelistForm(request.POST or None)
 	if form_t.is_valid():
-		user = request.user
 		if user.toseelist:
 			toseelist = user.toseelist
 		else:
 			toseelist = user.toseelist.create()
-		# toseelist = user.toseelist.get_or_create(user=user)
-		# try if get or create works (instead of create, delete all else)
 		toseelist.pub_date = datetime.datetime.now()
 		toseelist.save()
 		toseelist.movies.add(movie)
@@ -59,13 +55,13 @@ def wishlist(request):
 	movies = toseelist.movies.all
 	return render(request, 'movielist/wishlist.html', {"movies": movies})
 
-# @login_required
-def rating_list(request):
+@login_required
+def score_list(request):
 	if request.user.is_authenticated(): # This is not necessary if you also have login_required. Change after deciding setup of page
-		full_list = Rating.objects.filter(user_name=request.user)
+		score_list = Score.objects.filter(user=request.user)
 	else: 
-		full_list = Rating.objects.all()
-	return render(request, 'movielist/rating_list.html', {"full_list": full_list})
+		score_list = Score.objects.all()
+	return render(request, 'movielist/score_list.html', {"score_list": score_list})
 
 
 # @login_required

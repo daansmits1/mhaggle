@@ -36,28 +36,16 @@
 	<input type="submit" value="Add" />
 </form>
 
-<!-- <h3><strong> Rate this movie </strong></h3>
-<form action="{% url 'movielist:detail' movie.id %}" method="post">
-	{% csrf_token %}
-	{{ form_r.as_p }}
-	<input type="submit" value="Add" />
-</form>
 
-<h3><strong> Log an actor </strong></h3>
-<form action="{% url 'movielist:detail' movie.id %}" method="post">
-	{% csrf_token %}
-	{{ form_a.as_p }}
-	<input type="submit" value="Add" />
-</form> -->
 
-{% if messages %}
+<!-- {% if messages %}
 <ul class="messages">
     {% for message in messages %}
     <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
     {% endfor %}
 </ul>
 {% endif %}
-
+ -->
 {% endif %}
 
 
