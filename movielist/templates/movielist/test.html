@@ -1,0 +1,43 @@
+<?php
+
+$likeMovie = "Yes"; 
+$bt1 = "Movie"; 
+
+if ($likeMovie == "Yes"){
+  $valueMovie = "Unlike";
+} else {
+  $valueMovie = "Like";  
+}
+
+$person="Daan";
+
+?>
+
+<html>
+
+  <head>
+    <script type="text/javascript">
+      function toggleLike(myVal, btId){
+        var person ="<?php echo $person; ?>";
+        if (myVal=="Like"){
+          document.getElementById(btId).value = "Unlike";
+        } else {
+          document.getElementById(btId).value = "Like";
+        }
+        alert (person+" "+myVal+" "+btn1);
+       // now doesn't seem to work 
+             
+      }
+          
+    </script>
+  
+  </head>
+
+  <body>
+    <h1>Hello!</h1>
+  
+Do you like this movie?
+<input onClick="toggleLike(this.value, this.id)" type="button" value="<?php echo $valueMovie; ?>" id="<?php echo $bt1; ?>">
+
+</body>
+</html>

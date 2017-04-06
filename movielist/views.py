@@ -23,11 +23,13 @@ def detail(request, movie_id):
 	form_t = ToseelistForm(request.POST or None)
 	user = request.user
 	if form_s.is_valid():
+	# Test if it already exists (combination movie and user id). If so, drop that one and then create the new one
 		score = Score()
 	# rating = user.rating_set.get_or_create(movie=movie)?
 		score.movies = movie
 		score.score = form_s.cleaned_data['score'] # make sure you don't overwrite if it has already been set
 		score.user = user
+		# if score.score != none --> update the score
 		score.pub_date = datetime.datetime.now()
 		score.save()
 	if form_t.is_valid():
@@ -79,3 +81,7 @@ def profile_page(request):
 	else: 
 		error = "Something went wrong, please try again"
 		return render(request, 'registration/login.html', {"error": error})
+
+
+def test(request):
+	return render(request, "movielist/test.html")
