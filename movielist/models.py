@@ -19,6 +19,7 @@ class Movie(models.Model):
 	# actor = models.ManyToManyField(Actor, blank=True) 	
 	votes = models.IntegerField(default=0)
 	# wishlist_users = model.ManyToManyField(User, through='Wishlist') #wishees? ratees?
+	# raters = models.ManyToManyField(User, through='Score')
 	def __str__(self):
 		return self.title_year
 

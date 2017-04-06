@@ -32,6 +32,29 @@ def detail(request, movie_id):
 		# if score.score != none --> update the score
 		score.pub_date = datetime.datetime.now()
 		score.save()
+	return render(request, 'movielist/detail.html', {'movie': movie, 'form_s': form_s, 'form_t': form_t} )
+	# return HttpResponseRedirect(reverse('movielist:detail'), args=(movie, form_s, form_t))
+
+def score_submission():
+	movie = get_object_or_404(Movie, pk=movie_id)
+	form_s = ScoreForm(request.POST or None) 
+	form_t = ToseelistForm(request.POST or None) #do we need this?
+	user = request.user
+	if form_s.is_valid():
+		score = Score()
+		score.movies = movie
+		score.score = form_s.cleaned_data['score'] 
+		score.user = user
+		score.pub_date = datetime.datetime.now()
+		score.save()
+# 		# return HttpResponseRedirect(reverse('movielist:detail'), args=(movie,)) Don't get this to work
+	return render(request, 'movielist/detail.html', {'movie': movie, 'form_s': form_s, 'form_t': form_t} )
+
+def add_to_wishlist(request, movie_id):
+	movie = get_object_or_404(Movie, pk=movie_id)
+	form_s = ScoreForm(request.POST or None) #do we need this?
+	form_t = ToseelistForm(request.POST or None)
+	user = request.user
 	if form_t.is_valid():
 		if user.toseelist:
 			toseelist = user.toseelist
@@ -40,8 +63,17 @@ def detail(request, movie_id):
 		toseelist.pub_date = datetime.datetime.now()
 		toseelist.save()
 		toseelist.movies.add(movie)
-	messages.success(request, "Successfully saved")
-		# return HttpResponseRedirect(reverse('movielist:detail'), args=(movie,)) Don't get this to work
+	# return HttpResponseRedirect(reverse('movielist:detail'), args=(movie, form_s, form_t))
+	return render(request, 'movielist/detail.html', {'movie': movie, 'form_s': form_s, 'form_t': form_t} )
+
+def remove_from_wishlist(request, movie_id):
+	movie = get_object_or_404(Movie, pk=movie_id)
+	form_s = ScoreForm(request.POST or None)
+	form_t = ToseelistForm(request.POST or None)
+	user = request.user
+	toseelist = user.toseelist
+	if form_t.is_valid():
+		toseelist.movies.remove(movie)
 	return render(request, 'movielist/detail.html', {'movie': movie, 'form_s': form_s, 'form_t': form_t} )
 
 def search(request):
