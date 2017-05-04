@@ -22,7 +22,13 @@
 
 {% if user in movie.raters.all %}
 
-<h3> You already rated this movielist.</h3>
+<h3> You already rated this movielist.You rated it {{ score.score }} out of 10</h3>
+
+<form action="{% url 'movielist:score_update' movie.id %}" method="post">
+	{% csrf_token %}
+	{{ form_s.as_p }}
+	<input type="submit" value="Update" />
+</form>
 
 {% else %}
 

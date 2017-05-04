@@ -4,7 +4,7 @@
 {% block content %}
 {{ error }}
 
-<form method="post" action="{% url 'movielist:profile_page' %}">
+<form method="post" action="{% url 'movielist:login' %}">
   {% csrf_token %} 
   {{ form.as_p }}
 

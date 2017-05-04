@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from movielist.models import Movie, Score, Toseelist
 from movielist.forms import ScoreForm, ToseelistForm
 from django.core.urlresolvers import reverse	
@@ -22,17 +22,12 @@ def detail(request, movie_id):
 	form_s = ScoreForm(request.POST or None)
 	form_t = ToseelistForm(request.POST or None)
 	user = request.user
-	if form_s.is_valid():
-	# Test if it already exists (combination movie and user id). If so, drop that one and then create the new one
-		score = Score()
-	# rating = user.rating_set.get_or_create(movie=movie)?
-		score.movies = movie
-		score.score = form_s.cleaned_data['score'] # make sure you don't overwrite if it has already been set
-		score.user = user
-		# if score.score != none --> update the score
-		score.pub_date = datetime.datetime.now()
-		score.save()
-	return render(request, 'movielist/detail.html', {'movie': movie, 'form_s': form_s, 'form_t': form_t} )
+	if user.score_set.get(movies=movie):
+		score = user.score_set.get(movies=movie)
+	else:
+		score = ("")
+	return render(request, 'movielist/detail.html', {'score':score, 'movie': movie, 'form_s': form_s, 'form_t': form_t} )
+	# return render(request, 'movielist/detail.html', {'movie': movie, 'form_s': form_s, 'form_t': form_t} )
 	# return HttpResponseRedirect(reverse('movielist:detail'), args=(movie, form_s, form_t))
 
 def score_submission(request, movie_id):
@@ -48,7 +43,24 @@ def score_submission(request, movie_id):
 		score.pub_date = datetime.datetime.now()
 		score.save()
 # 		# return HttpResponseRedirect(reverse('movielist:detail'), args=(movie,)) Don't get this to work
-	return render(request, 'movielist/detail.html', {'movie': movie, 'form_s': form_s, 'form_t': form_t} )
+	return redirect('movielist:detail', movie_id= movie.id)
+
+def score_update(request, movie_id):
+	movie = get_object_or_404(Movie, pk=movie_id)
+	form_s = ScoreForm(request.POST or None) 
+	form_t = ToseelistForm(request.POST or None) #do we need this?
+	user = request.user
+	score = user.score_set.get(movies=movie)
+	if form_s.is_valid():
+		score.delete()
+		score = Score()
+		score.movies = movie
+		score.score = form_s.cleaned_data['score'] 
+		score.user = user
+		score.pub_date = datetime.datetime.now()
+		score.save()
+# 		# return HttpResponseRedirect(reverse('movielist:detail'), args=(movie,)) Don't get this to work
+	return redirect('movielist:detail', movie_id= movie.id)
 
 def add_to_wishlist(request, movie_id):
 	movie = get_object_or_404(Movie, pk=movie_id)
@@ -64,7 +76,8 @@ def add_to_wishlist(request, movie_id):
 		toseelist.save()
 		toseelist.movies.add(movie)
 	# return HttpResponseRedirect(reverse('movielist:detail'), args=(movie, form_s, form_t))
-	return render(request, 'movielist/detail.html', {'movie': movie, 'form_s': form_s, 'form_t': form_t} )
+	# return render(request, 'movielist/detail.html', {'movie': movie, 'form_s': form_s, 'form_t': form_t} )
+	return redirect('movielist:detail', movie_id= movie.id)
 
 def remove_from_wishlist(request, movie_id):
 	movie = get_object_or_404(Movie, pk=movie_id)
@@ -74,7 +87,8 @@ def remove_from_wishlist(request, movie_id):
 	toseelist = user.toseelist
 	if form_t.is_valid():
 		toseelist.movies.remove(movie)
-	return render(request, 'movielist/detail.html', {'movie': movie, 'form_s': form_s, 'form_t': form_t} )
+	return redirect('movielist:detail', movie_id= movie.id)
+
 
 def search(request):
 	search = request.GET.get("search_terms")
@@ -98,9 +112,13 @@ def score_list(request):
 	return render(request, 'movielist/score_list.html', {"score_list": score_list})
 
 
-# @login_required
+@login_required
 # do you want to make profile page public? otherwise maybe dashboard
 def profile_page(request):
+	user = request.user
+	return render(request, 'movielist/profile_page.html')
+
+def login(request, error=None):
 	username = request.POST["username"]
 	password = request.POST['password']
 	user = authenticate(username=username, password=password)
@@ -112,8 +130,7 @@ def profile_page(request):
 		return render(request, 'movielist/profile_page.html')
 	else: 
 		error = "Something went wrong, please try again"
-		return render(request, 'registration/login.html', {"error": error})
-
+		return render(request, 'registration/login.html')
 
 def test(request):
 	return render(request, "movielist/test.html")
