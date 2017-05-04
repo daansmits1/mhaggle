@@ -35,7 +35,7 @@ def detail(request, movie_id):
 	return render(request, 'movielist/detail.html', {'movie': movie, 'form_s': form_s, 'form_t': form_t} )
 	# return HttpResponseRedirect(reverse('movielist:detail'), args=(movie, form_s, form_t))
 
-def score_submission():
+def score_submission(request, movie_id):
 	movie = get_object_or_404(Movie, pk=movie_id)
 	form_s = ScoreForm(request.POST or None) 
 	form_t = ToseelistForm(request.POST or None) #do we need this?
